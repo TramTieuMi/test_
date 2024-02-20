@@ -1,31 +1,44 @@
-#DR
-you = "today"
-
-if you == "":
-    robot_brain = "I can't hear you, try again"
-elif you == "hello":
-    robot_brain = "Hello huhu"
-elif you == "today":
-    robot_brain = "thu 6"
-else:
-    robot_brain = "I'm fine thank you"
-
-print(robot_brain)
-
-import pyttsx3
-
-robot_brain = "Hello"
-robot_brain = pyttsx3.init()
-robot_brain.say(robot_brain)
-robot_brain.runAndWait()
-
 import speech_recognition
-robot_ear = speech_recognition.Recognizer()
-with speech_recognition.Microphone() as mic:
-    print("Robot: I'm Listening")
-    audio = robot_ear.listen(mic)
+import pyttsx3
+from datetime import date
 
-you = robot_ear.recognize_google(audio)
+while True:
+    robot_ear = speech_recognition.Recognizer()
+    robot_mouth = pyttsx3.init()
+    robot_brain = ""
+    with speech_recognition.Microphone() as mic:
+        print("Robot: I'm Listening")
+        audio = robot_ear.listen(mic)
 
-print(you)
+    print("Robot: ...")
+    try:
+        you = robot_ear.recognize_google(audio)
+    except:
+        you == "i can't hear you"
 
+    print("You: " + you)
+
+
+    if you == "":
+        robot_brain = "I can't hear you, try again"
+    elif "hello" in you:
+        robot_brain = "Hello nho"
+    elif "today" in you:
+
+        today = date.today()
+        # Textual month, day and year
+        robot_brain = today.strftime("%B %d, %Y")
+        print(robot_brain)
+    elif "bye" in you:
+        robot_brain = "Bai, chu chu"
+        print("Robot: " + robot_brain)
+
+        robot_mouth.say(robot_brain)
+        robot_mouth.runAndWait()
+        break
+    else:
+        robot_brain = "I'm fine thank you"
+    print("Robot: " + robot_brain)
+
+    robot_mouth.say(robot_brain)
+    robot_mouth.runAndWait()
